@@ -9,6 +9,11 @@ namespace AlgoritmeProjekt
 {
     class Tower : Entity
     {
+        public Tower(int x, int y) : base(x, y)
+        {
+
+        }
+
         public override void LoadContent(ContentManager contentManager)
         {
             throw new NotImplementedException();
