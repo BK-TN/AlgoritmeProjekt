@@ -67,6 +67,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
+    <Content Include="Content\grass.jpg" />
+    <Content Include="Content\key.png" />
+    <Content Include="Content\monster.png" />
+    <Content Include="Content\portal.png" />
+    <Content Include="Content\sand.jpg" />
+    <Content Include="Content\tower1.png" />
+    <Content Include="Content\tower2.png" />
+    <Content Include="Content\tree.png" />
+    <Content Include="Content\Wall.png" />
+    <Content Include="Content\wizard.png" />
     <Content Include="OpenTK.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
