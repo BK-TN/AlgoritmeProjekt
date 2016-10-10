@@ -16,10 +16,12 @@ namespace AlgoritmeProjekt
         public ReadOnlyCollection<Entity> Entities { get { return new ReadOnlyCollection<Entity>(entities); } }
 
         private ContentManager contentManager;
+        private CollisionGrid collisionGrid;
 
-        public World(ContentManager contentManager)
+        public World(ContentManager contentManager, int width, int height)
         {
             this.contentManager = contentManager;
+            collisionGrid = new CollisionGrid(width, height);
         }
 
         public void AddEntity(Entity e)
@@ -33,6 +35,7 @@ namespace AlgoritmeProjekt
 
         public void Update(float deltaTime)
         {
+            collisionGrid.Refresh(this);
         }
 
         public void Draw(SpriteBatch target)

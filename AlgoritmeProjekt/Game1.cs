@@ -18,7 +18,6 @@ namespace AlgoritmeProjekt
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            world = new World(Content);
         }
 
         /// <summary>
@@ -30,6 +29,10 @@ namespace AlgoritmeProjekt
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            world = new World(Content, 64, 48);
+            world.AddEntity(new Wall(0, 0));
+            world.AddEntity(new Wall(1, 0));
+            world.AddEntity(new Wall(2, 0));
 
             base.Initialize();
         }
