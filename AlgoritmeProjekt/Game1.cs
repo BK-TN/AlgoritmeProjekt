@@ -11,6 +11,8 @@ namespace AlgoritmeProjekt
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private Texture2D grass;
+        private Texture2D sand;
 
         private World world;
 
@@ -61,6 +63,8 @@ namespace AlgoritmeProjekt
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            grass = Content.Load<Texture2D>("grass");
+            sand = Content.Load<Texture2D>("sand");
         }
 
         /// <summary>
@@ -98,6 +102,19 @@ namespace AlgoritmeProjekt
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(grass, new Rectangle(0, 100, 48, 48), Color.White);
+            for (int x = 0; x < 10; x++)
+            {
+                for (int y = 0; y < 10; y++)
+                {
+                    spriteBatch.Draw(grass, new Vector2(x * 48, y * 48), Color.White);
+                }
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                spriteBatch.Draw(sand, GridPos(2 + i ,8), Color.White);
+            }
             world.Draw(spriteBatch);
             spriteBatch.End();
 

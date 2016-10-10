@@ -20,7 +20,7 @@ namespace AlgoritmeProjekt
 
         public override void LoadContent(ContentManager contentManager)
         {
-            sprite = contentManager.Load<Texture2D>("Wall");
+            sprite = contentManager.Load<Texture2D>("tree");
         }
 
         public override void Draw(SpriteBatch target)
