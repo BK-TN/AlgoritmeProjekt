@@ -9,10 +9,6 @@ namespace AlgoritmeProjekt
 {
     internal class Wizard : Entity
     {
-        public Wizard(int x, int y) : base(x, y)
-        {
-        }
-
         public override void LoadContent(ContentManager contentManager)
         {
             //TODO: Load wizard sprite

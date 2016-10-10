@@ -25,7 +25,7 @@ namespace AlgoritmeProjekt
             {
                 if (e.Solid)
                 {
-                    tiles[e.X, e.Y] = true;
+                    tiles[(int)(e.Position.X / 48), (int)(e.Position.Y / 48)] = true;
                 }
             }
             this.tiles = tiles;

@@ -9,10 +9,6 @@ namespace AlgoritmeProjekt
 {
     internal class Portal : Entity
     {
-        public Portal(int x, int y) : base(x, y)
-        {
-        }
-
         public override void LoadContent(ContentManager contentManager)
         {
             //TODO: Load portal sprite

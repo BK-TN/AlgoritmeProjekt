@@ -30,20 +30,25 @@ namespace AlgoritmeProjekt
         {
             // TODO: Add your initialization logic here
             world = new World(Content, 10, 10);
-            world.AddEntity(new Wall(0, 0));
-            world.AddEntity(new Wall(1, 0));
-            world.AddEntity(new Wall(2, 0));
+            world.AddEntity(new Wall() { Position = GridPos(0, 0) });
+            world.AddEntity(new Wall() { Position = GridPos(1, 0) });
+            world.AddEntity(new Wall() { Position = GridPos(2, 0) });
 
             for (int i = 0; i < 5; i++)
             {
-                world.AddEntity(new Tree(2 + i, 7));
-                world.AddEntity(new Tree(2 + i, 9));
+                world.AddEntity(new Tree() { Position = GridPos(2 + i, 7) });
+                world.AddEntity(new Tree() { Position = GridPos(2 + i, 9) });
             }
 
             IsMouseVisible = true;
             this.graphics.PreferredBackBufferWidth = 480;
             this.graphics.PreferredBackBufferHeight = 480;
             base.Initialize();
+        }
+
+        public Vector2 GridPos(int x, int y)
+        {
+            return new Vector2(x * 48, y * 48);
         }
 
         /// <summary>

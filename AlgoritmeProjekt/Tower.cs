@@ -17,7 +17,7 @@ namespace AlgoritmeProjekt
     {
         private TowerType Type { get; }
 
-        public Tower(int x, int y, TowerType type) : base(x, y)
+        public Tower(TowerType type)
         {
             Type = type;
         }

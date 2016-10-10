@@ -13,7 +13,7 @@ namespace AlgoritmeProjekt
     {
         private Texture2D sprite;
 
-        public Tree(int x, int y) : base(x, y)
+        public Tree()
         {
             Solid = true;
         }
@@ -25,7 +25,7 @@ namespace AlgoritmeProjekt
 
         public override void Draw(SpriteBatch target)
         {
-            target.Draw(sprite, new Vector2(X * 48, Y * 48));
+            target.Draw(sprite, new Vector2(Position.X, Position.Y));
         }
     }
 }

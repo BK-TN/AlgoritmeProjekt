@@ -9,10 +9,6 @@ namespace AlgoritmeProjekt
 {
     internal class Monster : Entity
     {
-        public Monster(int x, int y) : base(x, y)
-        {
-        }
-
         public override void LoadContent(ContentManager contentManager)
         {
             //TODO: Load monster sprite
