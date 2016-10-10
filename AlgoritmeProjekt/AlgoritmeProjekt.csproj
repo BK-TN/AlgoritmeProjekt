@@ -41,7 +41,7 @@
     <Compile Include="CollisionGrid.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Keys.cs" />
+    <Compile Include="Key.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Portal.cs" />
     <Compile Include="Program.cs" />

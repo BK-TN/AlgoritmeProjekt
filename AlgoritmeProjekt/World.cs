@@ -36,10 +36,19 @@ namespace AlgoritmeProjekt
         public void Update(float deltaTime)
         {
             collisionGrid.Refresh(this);
+
+            foreach (Entity e in entities)
+            {
+                e.Update(deltaTime);
+            }
         }
 
         public void Draw(SpriteBatch target)
         {
+            foreach (Entity e in entities)
+            {
+                e.Draw(target);
+            }
         }
     }
 }

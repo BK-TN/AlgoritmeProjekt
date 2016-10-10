@@ -7,11 +7,10 @@ using Microsoft.Xna.Framework.Content;
 
 namespace AlgoritmeProjekt
 {
-    class Keys : Entity
+    internal class Key : Entity
     {
-        public Keys(int x, int y) : base(x, y)
+        public Key(int x, int y) : base(x, y)
         {
-
         }
 
         public override void LoadContent(ContentManager contentManager)

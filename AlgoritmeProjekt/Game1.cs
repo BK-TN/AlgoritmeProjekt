@@ -34,6 +34,7 @@ namespace AlgoritmeProjekt
             world.AddEntity(new Wall(1, 0));
             world.AddEntity(new Wall(2, 0));
 
+            IsMouseVisible = true;
             base.Initialize();
         }
 
