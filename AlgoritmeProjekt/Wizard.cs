@@ -7,16 +7,15 @@ using Microsoft.Xna.Framework.Content;
 
 namespace AlgoritmeProjekt
 {
-    class Wizard : Entity
+    internal class Wizard : Entity
     {
         public Wizard(int x, int y) : base(x, y)
         {
-
         }
 
         public override void LoadContent(ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            //TODO: Load wizard sprite
         }
     }
 }

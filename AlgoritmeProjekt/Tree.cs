@@ -7,16 +7,16 @@ using Microsoft.Xna.Framework.Content;
 
 namespace AlgoritmeProjekt
 {
-    class Tree : Entity
+    internal class Tree : Entity
     {
         public Tree(int x, int y) : base(x, y)
         {
-
+            Solid = true;
         }
 
         public override void LoadContent(ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            //TODO: Load tree sprite
         }
     }
 }
