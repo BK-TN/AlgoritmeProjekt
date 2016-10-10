@@ -30,15 +30,33 @@ namespace AlgoritmeProjekt
         {
             // TODO: Add your initialization logic here
             world = new World(Content, 10, 10);
-            world.AddEntity(new Wall() { Position = GridPos(0, 0) });
-            world.AddEntity(new Wall() { Position = GridPos(1, 0) });
-            world.AddEntity(new Wall() { Position = GridPos(2, 0) });
 
-            for (int i = 0; i < 5; i++)
+            world.AddEntity(new Portal() { Position = GridPos(0, 8) });
+            world.AddEntity(new Wizard() { Position = GridPos(1, 8) });
+
+            world.AddEntity(new Tower(TowerType.StormTower) { Position = GridPos(2, 4) });
+            world.AddEntity(new Tower(TowerType.IceTower) { Position = GridPos(8, 7) });
+
+            world.AddEntity(new Key() { Position = GridPos(0, 0) });
+            world.AddEntity(new Key() { Position = GridPos(9, 9) });
+
+            for (int y = 1; y <= 6; y++)
             {
-                world.AddEntity(new Tree() { Position = GridPos(2 + i, 7) });
-                world.AddEntity(new Tree() { Position = GridPos(2 + i, 9) });
+                for (int x = 4; x <= 6; x++)
+                {
+                    world.AddEntity(new Wall() { Position = GridPos(x, y) });
+                }
             }
+
+            for (int x = 2; x < 7; x++)
+            {
+                world.AddEntity(new Tree() { Position = GridPos(x, 7) });
+                world.AddEntity(new Tree() { Position = GridPos(x, 9) });
+            }
+
+            world.AddEntity(new Monster() { Position = GridPos(5, 8) });
+            world.AddEntity(new Monster() { Position = GridPos(6, 8) });
+            world.AddEntity(new Monster() { Position = GridPos(7, 8) });
 
             IsMouseVisible = true;
             this.graphics.PreferredBackBufferWidth = 480;
