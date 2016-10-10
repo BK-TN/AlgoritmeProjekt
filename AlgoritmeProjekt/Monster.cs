@@ -7,16 +7,15 @@ using Microsoft.Xna.Framework.Content;
 
 namespace AlgoritmeProjekt
 {
-    class Monster : Entity
+    internal class Monster : Entity
     {
         public Monster(int x, int y) : base(x, y)
         {
-
         }
 
         public override void LoadContent(ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            //TODO: Load monster sprite
         }
     }
 }

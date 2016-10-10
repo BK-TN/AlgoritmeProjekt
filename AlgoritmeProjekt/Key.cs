@@ -15,7 +15,7 @@ namespace AlgoritmeProjekt
 
         public override void LoadContent(ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            //TODO: Load key sprite
         }
     }
 }
