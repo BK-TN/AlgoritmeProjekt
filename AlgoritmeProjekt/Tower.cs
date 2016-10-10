@@ -7,16 +7,24 @@ using Microsoft.Xna.Framework.Content;
 
 namespace AlgoritmeProjekt
 {
-    class Tower : Entity
+    internal enum TowerType
     {
-        public Tower(int x, int y) : base(x, y)
-        {
+        StormTower,
+        IceTower
+    }
 
+    internal class Tower : Entity
+    {
+        private TowerType Type { get; }
+
+        public Tower(TowerType type)
+        {
+            Type = type;
         }
 
         public override void LoadContent(ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            //TODO: Load tower sprite based on tower type
         }
     }
 }

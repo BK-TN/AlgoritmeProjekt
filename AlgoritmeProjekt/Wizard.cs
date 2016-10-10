@@ -9,8 +9,9 @@ using System.Timers;
 
 namespace AlgoritmeProjekt
 {
-    class Wizard : Entity
+    internal class Wizard : Entity
     {
+<<<<<<< HEAD
         int i;
         
         List<Point> path;
@@ -20,9 +21,11 @@ namespace AlgoritmeProjekt
             path = new List<Point>();
         }
 
+=======
+>>>>>>> 680b494cc1d040603a3eeeb3eca55397b14e2dc0
         public override void LoadContent(ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            //TODO: Load wizard sprite
         }
 
         public void WizardPath(List<Point> list)

@@ -9,13 +9,9 @@ namespace AlgoritmeProjekt
 {
     internal class Key : Entity
     {
-        public Key(int x, int y) : base(x, y)
-        {
-        }
-
         public override void LoadContent(ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            //TODO: Load key sprite
         }
     }
 }
