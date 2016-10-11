@@ -18,6 +18,8 @@ namespace AlgoritmeProjekt
         private ContentManager contentManager;
         private CollisionGrid collisionGrid;
 
+        public CollisionGrid CollisionGrid { get { return collisionGrid; } }
+
         public World(ContentManager contentManager, int width, int height)
         {
             this.contentManager = contentManager;
