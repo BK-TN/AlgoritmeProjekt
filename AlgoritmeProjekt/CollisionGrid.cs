@@ -18,6 +18,11 @@ namespace AlgoritmeProjekt
             tiles = new bool[width, height];
         }
 
+        public bool GetTile(int x, int y)
+        {
+            return tiles[x, y];
+        }
+
         public void Refresh(World world)
         {
             bool[,] tiles = new bool[Width, Height];
