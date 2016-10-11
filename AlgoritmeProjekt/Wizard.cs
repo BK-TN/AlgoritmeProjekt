@@ -12,24 +12,11 @@ namespace AlgoritmeProjekt
 {
     internal class Wizard : Entity
     {
-        private float X;
-        private float Y;
-        int CurrentPath;
-        private Texture2D sprite;
+
         private float speed;
         private Vector2 start;
         private Vector2 end;
         private Vector2 pos;
-
-        List<Vector2> path;
-        public Wizard() : base()
-        {
-            CurrentPath = 0;
-            speed = 60;
-            path = new List<Vector2>();
-   
-        }
-
         private int CurrentPath;
         private Texture2D sprite;
         private List<Vector2> path;
@@ -58,10 +45,6 @@ namespace AlgoritmeProjekt
         {
             sprite = contentManager.Load<Texture2D>("wizard");
         }
-
-
-        public void Path(List<Vector2> list)
-
         private void Wat2Do()
         {
             if (!hasDeliveredPotion)
@@ -231,7 +214,7 @@ namespace AlgoritmeProjekt
                 }
             }
 
-            this.Position = new Vector2(X, Y);
+            
 
         }
 
