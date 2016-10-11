@@ -29,6 +29,7 @@ namespace AlgoritmeProjekt
             if (!entities.Contains(e))
             {
                 e.LoadContent(contentManager);
+                e.World = this;
                 entities.Add(e);
             }
         }

@@ -12,18 +12,40 @@ namespace AlgoritmeProjekt
     internal class Monster : Entity
     {
         private Texture2D sprite;
+        private bool visible = false;
 
-        public Monster() { }
+        public Monster()
+        {
+        }
 
         public override void LoadContent(ContentManager contentManager)
         {
-            //TODO: Load monster sprite
             sprite = contentManager.Load<Texture2D>("monster");
         }
 
         public override void Draw(SpriteBatch target)
         {
-            target.Draw(sprite, new Vector2(Position.X, Position.Y));
+            if (visible)
+                target.Draw(sprite, new Vector2(Position.X, Position.Y));
+        }
+
+        public override void Update(float deltaTime)
+        {
+            foreach (Wizard wiz in World.Entities.OfType<Wizard>())
+            {
+                int wizX = ((int)(wiz.Position.X / 48)) * 48;
+                int wizY = ((int)(wiz.Position.Y / 48)) * 48;
+
+                int myX = ((int)(Position.X / 48)) * 48;
+                int myY = ((int)(Position.Y / 48)) * 48;
+
+                if (wizX == myX && wizY == myY)
+                {
+                    //Wizard has now stepped on monster
+                    Solid = true;
+                    visible = true;
+                }
+            }
         }
     }
 }

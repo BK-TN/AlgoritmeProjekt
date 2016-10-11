@@ -35,6 +35,7 @@ namespace AlgoritmeProjekt
 
             world.AddEntity(new Portal() { Position = GridPos(0, 8) });
             world.AddEntity(new Wizard() { Position = GridPos(1, 8) });
+            
 
             world.AddEntity(new Tower(TowerType.StormTower) { Position = GridPos(2, 4) });
             world.AddEntity(new Tower(TowerType.IceTower) { Position = GridPos(8, 7) });
