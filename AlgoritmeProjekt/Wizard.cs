@@ -12,7 +12,6 @@ namespace AlgoritmeProjekt
 {
     internal class Wizard : Entity
     {
-
         private float speed;
         private Vector2 start;
         private Vector2 end;
@@ -37,7 +36,6 @@ namespace AlgoritmeProjekt
             path.Add(new Vector2(100, 400));
             path.Add(new Vector2(400, 400));
 
-
             //Wat2Do();
         }
 
@@ -45,6 +43,7 @@ namespace AlgoritmeProjekt
         {
             sprite = contentManager.Load<Texture2D>("wizard");
         }
+
         private void Wat2Do()
         {
             if (!hasDeliveredPotion)
@@ -58,7 +57,7 @@ namespace AlgoritmeProjekt
                         Key key = LookForKey(TowerType.StormTower);
                         if (key != null)
                         {
-                            path = pathfinder.FindPath(Position, key.Position).ToList();
+                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(key.Position)).ToList();
                         }
                     }
                     else
@@ -67,7 +66,7 @@ namespace AlgoritmeProjekt
                         Tower tower = LookForTower(TowerType.StormTower);
                         if (tower != null)
                         {
-                            path = pathfinder.FindPath(Position, tower.Position).ToList();
+                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(tower.Position)).ToList();
                         }
                     }
                 }
@@ -80,7 +79,7 @@ namespace AlgoritmeProjekt
                         Key key = LookForKey(TowerType.IceTower);
                         if (key != null)
                         {
-                            path = pathfinder.FindPath(Position, key.Position).ToList();
+                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(key.Position)).ToList();
                         }
                     }
                     else
@@ -89,7 +88,7 @@ namespace AlgoritmeProjekt
                         Tower tower = LookForTower(TowerType.IceTower);
                         if (tower != null)
                         {
-                            path = pathfinder.FindPath(Position, tower.Position).ToList();
+                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(tower.Position)).ToList();
                         }
                     }
                 }
@@ -100,7 +99,7 @@ namespace AlgoritmeProjekt
                 Portal p = World.Entities.OfType<Portal>().FirstOrDefault();
                 if (p != null)
                 {
-                    path = pathfinder.FindPath(Position, p.Position).ToList();
+                    path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(p.Position)).ToList();
                 }
             }
         }
@@ -133,22 +132,20 @@ namespace AlgoritmeProjekt
             float distance = Vector2.Distance(start, end);
 
             Vector2 direction = Vector2.Normalize(end - start);
-           
+
             bool moving = true;
 
-            if(moving == true)
+            if (moving == true)
             {
                 pos += direction * speed * deltaTime;
                 this.Position = pos;
 
-                if(Vector2.Distance(start,pos) >= distance && CurrentPath != path.Count )
+                if (Vector2.Distance(start, pos) >= distance && CurrentPath != path.Count)
                 {
-                    
                     this.Position = end;
                     CurrentPath++;
                     moving = false;
-                }   
-
+                }
             }
         }
 
@@ -156,12 +153,8 @@ namespace AlgoritmeProjekt
         {
             base.Update(deltaTime);
 
-          
-          if(CurrentPath <= path.Count -1)
-            FollowPath(path.ElementAt(CurrentPath), deltaTime);         
-
-
-            
+            if (CurrentPath <= path.Count - 1)
+                FollowPath(path.ElementAt(CurrentPath), deltaTime);
 
             foreach (Key key in World.Entities.OfType<Key>())
             {
@@ -213,9 +206,6 @@ namespace AlgoritmeProjekt
                     }
                 }
             }
-
-            
-
         }
 
         public override void Draw(SpriteBatch target)
