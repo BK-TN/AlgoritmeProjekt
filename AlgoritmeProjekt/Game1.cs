@@ -35,13 +35,12 @@ namespace AlgoritmeProjekt
 
             world.AddEntity(new Portal() { Position = GridPos(0, 8) });
             world.AddEntity(new Wizard() { Position = GridPos(1, 8) });
-            
 
             world.AddEntity(new Tower(TowerType.StormTower) { Position = GridPos(2, 4) });
             world.AddEntity(new Tower(TowerType.IceTower) { Position = GridPos(8, 7) });
 
-            world.AddEntity(new Key() { Position = GridPos(0, 0) });
-            world.AddEntity(new Key() { Position = GridPos(9, 9) });
+            world.AddEntity(new Key(TowerType.StormTower) { Position = GridPos(0, 0) });
+            world.AddEntity(new Key(TowerType.IceTower) { Position = GridPos(9, 9) });
 
             for (int y = 1; y <= 6; y++)
             {
@@ -132,7 +131,7 @@ namespace AlgoritmeProjekt
 
             for (int i = 0; i < 5; i++)
             {
-                spriteBatch.Draw(sand, GridPos(2 + i ,8), Color.White);
+                spriteBatch.Draw(sand, GridPos(2 + i, 8), Color.White);
             }
             world.Draw(spriteBatch);
             spriteBatch.End();

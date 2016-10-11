@@ -18,7 +18,8 @@ namespace AlgoritmeProjekt
     internal class Tower : Entity
     {
         private Texture2D sprite;
-        private TowerType Type { get; }
+
+        public TowerType Type { get; }
 
         public Tower(TowerType type)
         {
