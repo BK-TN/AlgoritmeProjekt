@@ -11,8 +11,24 @@ namespace AlgoritmeProjekt
 {
     internal abstract class Entity
     {
+        private World world;
+
         public Vector2 Position { get; set; }
         public bool Solid { get; protected set; }
+        public World World
+        {
+            get
+            {
+                return world;
+            }
+            set
+            {
+                if (world == null)
+                    world = value;
+                else
+                    throw new InvalidOperationException("World is already set");
+            }
+        }
 
         public Entity()
         {

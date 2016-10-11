@@ -18,6 +18,8 @@ namespace AlgoritmeProjekt
         private ContentManager contentManager;
         private CollisionGrid collisionGrid;
 
+        public CollisionGrid CollisionGrid { get { return collisionGrid; } }
+
         public World(ContentManager contentManager, int width, int height)
         {
             this.contentManager = contentManager;
@@ -29,6 +31,7 @@ namespace AlgoritmeProjekt
             if (!entities.Contains(e))
             {
                 e.LoadContent(contentManager);
+                e.World = this;
                 entities.Add(e);
             }
         }
@@ -49,6 +52,17 @@ namespace AlgoritmeProjekt
             {
                 e.Draw(target);
             }
+        }
+
+        public bool AreOnSameTile(Entity one, Entity two)
+        {
+            int oneX = (int)(one.Position.X / 48);
+            int oneY = (int)(one.Position.Y / 48);
+
+            int twoX = (int)(two.Position.X / 48);
+            int twoY = (int)(two.Position.Y / 48);
+
+            return oneX == twoX && oneY == twoY;
         }
     }
 }

@@ -13,7 +13,13 @@ namespace AlgoritmeProjekt
     {
         private Texture2D sprite;
 
-        public Key() { }
+        public TowerType Type { get; }
+
+        public Key(TowerType type)
+        {
+            Type = type;
+        }
+
         public override void LoadContent(ContentManager contentManager)
         {
             //TODO: Load key sprite
