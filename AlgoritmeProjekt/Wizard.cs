@@ -155,6 +155,57 @@ namespace AlgoritmeProjekt
 
             goToPoint(path.ElementAt(CurrentPath), deltaTime);
 
+            foreach (Key key in World.Entities.OfType<Key>())
+            {
+                if (World.AreOnSameTile(this, key) && !foundKeys.Contains(key))
+                {
+                    //TODO: Remove key from world
+                    foundKeys.Add(key);
+                }
+            }
+
+            if (!hasPotion && !hasDeliveredPotion)
+            {
+                foreach (Tower stormTower in World.Entities.OfType<Tower>().Where(a => a.Type == TowerType.StormTower))
+                {
+                    if (World.AreOnSameTile(this, stormTower))
+                    {
+                        if (foundKeys.Any(a => a.Type == TowerType.StormTower))
+                        {
+                            //POTION GET
+                            hasPotion = true;
+                        }
+                    }
+                }
+            }
+
+            if (hasPotion && !hasDeliveredPotion)
+            {
+                foreach (Tower iceTower in World.Entities.OfType<Tower>().Where(a => a.Type == TowerType.IceTower))
+                {
+                    if (World.AreOnSameTile(this, iceTower))
+                    {
+                        if (foundKeys.Any(a => a.Type == TowerType.IceTower))
+                        {
+                            //POTION PUT
+                            hasPotion = false;
+                            hasDeliveredPotion = true;
+                        }
+                    }
+                }
+            }
+
+            if (hasDeliveredPotion)
+            {
+                foreach (Portal portal in World.Entities.OfType<Portal>())
+                {
+                    if (World.AreOnSameTile(this, portal))
+                    {
+                        //TODO: gtfo
+                    }
+                }
+            }
+
             this.Position = new Vector2(X, Y);
         }
 
