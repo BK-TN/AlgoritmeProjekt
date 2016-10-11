@@ -16,6 +16,6 @@ namespace AlgoritmeProjekt
             this.collisionGrid = collisionGrid;
         }
 
-        public abstract Vector2[] FindPath(GridPos start, GridPos goal);
+        public abstract GridPos[] FindPath(GridPos start, GridPos goal);
     }
 }

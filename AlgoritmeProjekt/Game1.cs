@@ -34,11 +34,12 @@ namespace AlgoritmeProjekt
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             world = new World(Content, WORLD_WIDTH, WORLD_HEIGHT, WORLD_TILESIZE);
 
+            Pathfinder wizPathfinder = new DepthFirst(world.CollisionGrid);
+
             world.AddEntity(new Portal() { Position = world.GridPosToVector(0, 8) });
-            world.AddEntity(new Wizard() { Position = world.GridPosToVector(1, 8) });
+            world.AddEntity(new Wizard(wizPathfinder) { Position = world.GridPosToVector(1, 8) });
 
             world.AddEntity(new Tower(TowerType.StormTower) { Position = world.GridPosToVector(2, 4) });
             world.AddEntity(new Tower(TowerType.IceTower) { Position = world.GridPosToVector(8, 7) });

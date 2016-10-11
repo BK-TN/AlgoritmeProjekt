@@ -12,7 +12,7 @@ namespace AlgoritmeProjekt
 {
     internal class Wizard : Entity
     {
-        private float speed;
+        private float speed = 420;
         private Vector2 start;
         private Vector2 end;
         private Vector2 pos;
@@ -26,17 +26,11 @@ namespace AlgoritmeProjekt
 
         private Pathfinder pathfinder;
 
-        public Wizard() : base()
+        public Wizard(Pathfinder pathfinder) : base()
         {
+            this.pathfinder = pathfinder;
+
             CurrentPath = 0;
-
-            //pathfinder = new Pathfinder(collisionGrid);
-
-            path = new List<Vector2>();
-            path.Add(new Vector2(100, 400));
-            path.Add(new Vector2(400, 400));
-
-            //Wat2Do();
         }
 
         public override void LoadContent(ContentManager contentManager)
@@ -57,7 +51,11 @@ namespace AlgoritmeProjekt
                         Key key = LookForKey(TowerType.StormTower);
                         if (key != null)
                         {
-                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(key.Position)).ToList();
+                            SetTarget(key);
+                        }
+                        else
+                        {
+                            throw new Exception("No storm key");
                         }
                     }
                     else
@@ -66,7 +64,11 @@ namespace AlgoritmeProjekt
                         Tower tower = LookForTower(TowerType.StormTower);
                         if (tower != null)
                         {
-                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(tower.Position)).ToList();
+                            SetTarget(tower);
+                        }
+                        else
+                        {
+                            throw new Exception("No storm tower");
                         }
                     }
                 }
@@ -79,7 +81,11 @@ namespace AlgoritmeProjekt
                         Key key = LookForKey(TowerType.IceTower);
                         if (key != null)
                         {
-                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(key.Position)).ToList();
+                            SetTarget(key);
+                        }
+                        else
+                        {
+                            throw new Exception("No ice key");
                         }
                     }
                     else
@@ -88,7 +94,11 @@ namespace AlgoritmeProjekt
                         Tower tower = LookForTower(TowerType.IceTower);
                         if (tower != null)
                         {
-                            path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(tower.Position)).ToList();
+                            SetTarget(tower);
+                        }
+                        else
+                        {
+                            throw new Exception("No ice tower");
                         }
                     }
                 }
@@ -99,7 +109,11 @@ namespace AlgoritmeProjekt
                 Portal p = World.Entities.OfType<Portal>().FirstOrDefault();
                 if (p != null)
                 {
-                    path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(p.Position)).ToList();
+                    SetTarget(p);
+                }
+                else
+                {
+                    throw new Exception("No portal");
                 }
             }
         }
@@ -131,7 +145,12 @@ namespace AlgoritmeProjekt
 
             float distance = Vector2.Distance(start, end);
 
-            Vector2 direction = Vector2.Normalize(end - start);
+            Vector2 moveVector = end - start;
+            Vector2 direction = Vector2.Zero;
+            if (moveVector != Vector2.Zero)
+            {
+                direction = Vector2.Normalize(moveVector);
+            }
 
             bool moving = true;
 
@@ -146,6 +165,32 @@ namespace AlgoritmeProjekt
                     CurrentPath++;
                     moving = false;
                 }
+
+                if (CurrentPath == path.Count)
+                {
+                    path = null;
+                }
+            }
+        }
+
+        private void SetTarget(Entity target)
+        {
+            GridPos[] path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(target.Position));
+            CurrentPath = 0;
+
+            if (path != null)
+            {
+                this.path = path.Select(a => World.GridPosToVector(a)).ToList();
+            }
+            else
+            {
+                this.path = null;
+                throw new Exception("No path found!!");
+            }
+
+            if (this.path != null)
+            {
+                System.Diagnostics.Debug.WriteLine("New path, " + this.path.Count + " points");
             }
         }
 
@@ -153,8 +198,13 @@ namespace AlgoritmeProjekt
         {
             base.Update(deltaTime);
 
-            if (CurrentPath <= path.Count - 1)
-                FollowPath(path.ElementAt(CurrentPath), deltaTime);
+            if (path != null && CurrentPath <= path.Count - 1)
+                FollowPath(path[CurrentPath], deltaTime);
+
+            if (path == null)
+            {
+                Wat2Do();
+            }
 
             foreach (Key key in World.Entities.OfType<Key>())
             {
