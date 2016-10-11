@@ -12,22 +12,22 @@ namespace AlgoritmeProjekt
 {
     internal class Wizard : Entity
     {
-        float X;
-        float Y;
+        private float X;
+        private float Y;
         int CurrentPath;
         private Texture2D sprite;
+        private float speed;
+        private Vector2 start;
+        private Vector2 end;
+        private Vector2 pos;
+
         List<Vector2> path;
         public Wizard() : base()
         {
-            CurrentPath =0;
-
+            CurrentPath = 0;
+            speed = 60;
             path = new List<Vector2>();
-            path.Add(new Vector2(150, 10));
-            path.Add(new Vector2(100, 100));
-            path.Add(new Vector2(250, 100));
-            path.Add(new Vector2(10, 100));
-            path.Add(new Vector2(10, 10));
-            
+   
         }
 
 
@@ -36,54 +36,47 @@ namespace AlgoritmeProjekt
             sprite = contentManager.Load<Texture2D>("wizard");
         }
 
-        public void WizardPath(List<Vector2> list)
+        public void Path(List<Vector2> list)
         {
             CurrentPath = 0;
             path = list;
 
         }
-        public void goToPoint(Vector2 tal, float deltaTime)
+        public void FollowPath(Vector2 point, float deltaTime)
         {
-            
-            if (tal.X < X)
-            {
-                X-= 35*deltaTime;
-                this.Position = new Vector2(X, Y);
-            }
-            if (tal.X > X)
-            {
-                X += 35*deltaTime;
-                this.Position = new Vector2(X, Y);
-            }
-            if (tal.Y < Y)
-            {
-                Y-= 35*deltaTime ;
-                this.Position = new Vector2(X, Y);
-            }
-            if (tal.Y > Y)
-            {
-                Y += 35*deltaTime;
-                
-                this.Position = new Vector2(X, Y);
-            }
-            
+            start = this.Position;
 
-            if (Vector2.Distance(tal, new Vector2(X,Y)) <= 1 && CurrentPath != path.Count - 1)
-            {
-            this.Position = new Vector2(tal.X, tal.Y);
-            CurrentPath++;
-            }
-               
+            pos = start;
 
+            end = point;
+
+            float distance = Vector2.Distance(start, end);
+
+            Vector2 direction = Vector2.Normalize(end - start);
+           
+            bool moving = true;
+
+            if(moving == true)
+            {
+                pos += direction * speed * deltaTime;
+                this.Position = pos;
+
+                if(Vector2.Distance(start,pos) >= distance && CurrentPath != path.Count )
+                {
+                    
+                    this.Position = end;
+                    CurrentPath++;
+                    moving = false;
+                }   
+            }
         }
 
         public override void Update(float deltaTime)
         {
             base.Update(deltaTime);
-        
-            goToPoint(path.ElementAt(CurrentPath), deltaTime);
-                       
-            this.Position = new Vector2(X,Y);       
+          
+          if(CurrentPath <= path.Count -1)
+            FollowPath(path.ElementAt(CurrentPath), deltaTime);         
         }
         public override void Draw(SpriteBatch target)
         {
