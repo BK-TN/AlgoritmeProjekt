@@ -9,6 +9,10 @@ namespace AlgoritmeProjekt
     /// </summary>
     public class Game1 : Game
     {
+        private const int WORLD_WIDTH = 10;
+        private const int WORLD_HEIGHT = 10;
+        private const int WORLD_TILESIZE = 48;
+
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Texture2D grass;
@@ -30,45 +34,41 @@ namespace AlgoritmeProjekt
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            world = new World(Content, 10, 10);
+            world = new World(Content, WORLD_WIDTH, WORLD_HEIGHT, WORLD_TILESIZE);
 
-            world.AddEntity(new Portal() { Position = GridPos(0, 8) });
-            world.AddEntity(new Wizard() { Position = GridPos(1, 8) });
+            Pathfinder wizPathfinder = new DepthFirst(world.CollisionGrid);
 
-            world.AddEntity(new Tower(TowerType.StormTower) { Position = GridPos(2, 4) });
-            world.AddEntity(new Tower(TowerType.IceTower) { Position = GridPos(8, 7) });
+            world.AddEntity(new Portal() { Position = world.GridPosToVector(0, 8) });
+            world.AddEntity(new Wizard(wizPathfinder) { Position = world.GridPosToVector(1, 8) });
 
-            world.AddEntity(new Key(TowerType.StormTower) { Position = GridPos(0, 0) });
-            world.AddEntity(new Key(TowerType.IceTower) { Position = GridPos(9, 9) });
+            world.AddEntity(new Tower(TowerType.StormTower) { Position = world.GridPosToVector(2, 4) });
+            world.AddEntity(new Tower(TowerType.IceTower) { Position = world.GridPosToVector(8, 7) });
+
+            world.AddEntity(new Key(TowerType.StormTower) { Position = world.GridPosToVector(0, 0) });
+            world.AddEntity(new Key(TowerType.IceTower) { Position = world.GridPosToVector(9, 9) });
 
             for (int y = 1; y <= 6; y++)
             {
                 for (int x = 4; x <= 6; x++)
                 {
-                    world.AddEntity(new Wall() { Position = GridPos(x, y) });
+                    world.AddEntity(new Wall() { Position = world.GridPosToVector(x, y) });
                 }
             }
 
             for (int x = 2; x < 7; x++)
             {
-                world.AddEntity(new Tree() { Position = GridPos(x, 7) });
-                world.AddEntity(new Tree() { Position = GridPos(x, 9) });
+                world.AddEntity(new Tree() { Position = world.GridPosToVector(x, 7) });
+                world.AddEntity(new Tree() { Position = world.GridPosToVector(x, 9) });
             }
 
-            world.AddEntity(new Monster() { Position = GridPos(5, 8) });
-            world.AddEntity(new Monster() { Position = GridPos(6, 8) });
-            world.AddEntity(new Monster() { Position = GridPos(7, 8) });
+            world.AddEntity(new Monster() { Position = world.GridPosToVector(5, 8) });
+            world.AddEntity(new Monster() { Position = world.GridPosToVector(6, 8) });
+            world.AddEntity(new Monster() { Position = world.GridPosToVector(7, 8) });
 
             IsMouseVisible = true;
-            this.graphics.PreferredBackBufferWidth = 480;
-            this.graphics.PreferredBackBufferHeight = 480;
+            this.graphics.PreferredBackBufferWidth = WORLD_WIDTH * WORLD_TILESIZE;
+            this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT * WORLD_TILESIZE;
             base.Initialize();
-        }
-
-        public Vector2 GridPos(int x, int y)
-        {
-            return new Vector2(x * 48, y * 48);
         }
 
         /// <summary>
@@ -120,18 +120,17 @@ namespace AlgoritmeProjekt
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(grass, new Rectangle(0, 100, 48, 48), Color.White);
             for (int x = 0; x < 10; x++)
             {
                 for (int y = 0; y < 10; y++)
                 {
-                    spriteBatch.Draw(grass, new Vector2(x * 48, y * 48), Color.White);
+                    spriteBatch.Draw(grass, world.GridPosToVector(x, y), Color.White);
                 }
             }
 
             for (int i = 0; i < 5; i++)
             {
-                spriteBatch.Draw(sand, GridPos(2 + i, 8), Color.White);
+                spriteBatch.Draw(sand, world.GridPosToVector(2 + i, 8), Color.White);
             }
             world.Draw(spriteBatch);
             spriteBatch.End();

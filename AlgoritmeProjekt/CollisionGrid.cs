@@ -30,7 +30,8 @@ namespace AlgoritmeProjekt
             {
                 if (e.Solid)
                 {
-                    tiles[(int)(e.Position.X / 48), (int)(e.Position.Y / 48)] = true;
+                    GridPos pos = world.VectorToGridPos(e.Position);
+                    tiles[pos.X, pos.Y] = true;
                 }
             }
             this.tiles = tiles;
