@@ -38,7 +38,7 @@ namespace AlgoritmeProjekt
             Node currentNode = nodes[0];
             while (true)
             {
-                //Check each direction for empty spot
+                //Define points to check for new nodes on
                 GridPos[] positionsToCheck = new GridPos[]
                 {
                     new GridPos(currentNode.Position.X - 1, currentNode.Position.Y),

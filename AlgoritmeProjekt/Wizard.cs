@@ -12,12 +12,13 @@ namespace AlgoritmeProjekt
 {
     internal class Wizard : Entity
     {
-        private float speed = 420;
+        private float speed = 300;
         private Vector2 start;
         private Vector2 end;
         private Vector2 pos;
         private int currentPath;
         private Texture2D sprite;
+        private Texture2D potionSprite;
         private List<Vector2> path;
         private List<Key> foundKeys = new List<Key>();
         private bool hasPotion = false;
@@ -29,13 +30,13 @@ namespace AlgoritmeProjekt
         {
             this.pathfinder = pathfinder;
 
-
-            CurrentPath = 0;
+            currentPath = 0;
         }
 
         public override void LoadContent(ContentManager contentManager)
         {
             sprite = contentManager.Load<Texture2D>("wizard");
+            potionSprite = contentManager.Load<Texture2D>("potion");
         }
 
         private void Wat2Do()
@@ -158,8 +159,7 @@ namespace AlgoritmeProjekt
                 pos += direction * speed * deltaTime;
                 this.Position = pos;
 
-
-                if (Vector2.Distance(start, pos) >= distance && CurrentPath != path.Count)
+                if (Vector2.Distance(start, pos) >= distance && currentPath != path.Count)
 
                 {
                     this.Position = end;
@@ -167,7 +167,7 @@ namespace AlgoritmeProjekt
                     moving = false;
                 }
 
-                if (CurrentPath == path.Count)
+                if (currentPath == path.Count)
                 {
                     path = null;
                 }
@@ -177,7 +177,7 @@ namespace AlgoritmeProjekt
         private void SetTarget(Entity target)
         {
             GridPos[] path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(target.Position));
-            CurrentPath = 0;
+            currentPath = 0;
 
             if (path != null)
             {
@@ -199,9 +199,8 @@ namespace AlgoritmeProjekt
         {
             base.Update(deltaTime);
 
-
-            if (path != null && CurrentPath <= path.Count - 1)
-                FollowPath(path[CurrentPath], deltaTime);
+            if (path != null && currentPath <= path.Count - 1)
+                FollowPath(path[currentPath], deltaTime);
 
             if (path == null)
             {
@@ -212,7 +211,7 @@ namespace AlgoritmeProjekt
             {
                 if (World.AreOnSameTile(this, key) && !foundKeys.Contains(key))
                 {
-                    //TODO: Remove key from world
+                    World.RemoveEntity(key);
                     foundKeys.Add(key);
                 }
             }
@@ -254,7 +253,7 @@ namespace AlgoritmeProjekt
                 {
                     if (World.AreOnSameTile(this, portal))
                     {
-                        //TODO: gtfo
+                        World.RemoveEntity(this);
                     }
                 }
             }
@@ -263,6 +262,10 @@ namespace AlgoritmeProjekt
         public override void Draw(SpriteBatch target)
         {
             target.Draw(sprite, new Vector2(Position.X, Position.Y));
+            if (hasPotion)
+            {
+                target.Draw(potionSprite, new Vector2(Position.X + 30, Position.Y + 30));
+            }
         }
     }
 }
