@@ -12,21 +12,22 @@ namespace AlgoritmeProjekt
    class Node
     {
         private int g = 0;
-        private int h = 0;
+        private int h;
         private int f;
 
         private Node parent;
 
         //grid position
-        private Point pos;
+        private Point position;
 
-        public Node(Point pos)
+        public Node(Point position, int h, int g)
         {
-            this.pos = pos;
+            this.position = position;
         }
 
         public Node Parent { get; set; }
         public int G { get; set; }
-        
+        public int H { get; set; }
+        public int F { get; }
     }
 }
