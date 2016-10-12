@@ -25,3 +25,9 @@
 /processorParam:TextureFormat=Color
 /build:Wall.png
 
+#begin DefaultFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:DefaultFont.spritefont
+
