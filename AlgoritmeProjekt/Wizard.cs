@@ -30,7 +30,7 @@ namespace AlgoritmeProjekt
             this.pathfinder = pathfinder;
 
 
-            CurrentPath = 0;
+            currentPath = 0;
         }
 
         public override void LoadContent(ContentManager contentManager)
@@ -159,7 +159,7 @@ namespace AlgoritmeProjekt
                 this.Position = pos;
 
 
-                if (Vector2.Distance(start, pos) >= distance && CurrentPath != path.Count)
+                if (Vector2.Distance(start, pos) >= distance && currentPath != path.Count)
 
                 {
                     this.Position = end;
@@ -167,7 +167,7 @@ namespace AlgoritmeProjekt
                     moving = false;
                 }
 
-                if (CurrentPath == path.Count)
+                if (currentPath == path.Count)
                 {
                     path = null;
                 }
@@ -177,7 +177,7 @@ namespace AlgoritmeProjekt
         private void SetTarget(Entity target)
         {
             GridPos[] path = pathfinder.FindPath(World.VectorToGridPos(Position), World.VectorToGridPos(target.Position));
-            CurrentPath = 0;
+            currentPath = 0;
 
             if (path != null)
             {
@@ -200,8 +200,8 @@ namespace AlgoritmeProjekt
             base.Update(deltaTime);
 
 
-            if (path != null && CurrentPath <= path.Count - 1)
-                FollowPath(path[CurrentPath], deltaTime);
+            if (path != null && currentPath <= path.Count - 1)
+                FollowPath(path[currentPath], deltaTime);
 
             if (path == null)
             {
