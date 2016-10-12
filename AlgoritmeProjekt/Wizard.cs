@@ -17,10 +17,9 @@ namespace AlgoritmeProjekt
         private Vector2 start;
         private Vector2 end;
         private Vector2 pos;
-        private int CurrentPath;
+        private int currentPath;
         private Texture2D sprite;
         private List<Vector2> path;
-
         private List<Key> foundKeys = new List<Key>();
         private bool hasPotion = false;
         private bool hasDeliveredPotion = false;
@@ -29,7 +28,7 @@ namespace AlgoritmeProjekt
 
         public Wizard() : base()
         {
-            CurrentPath = 0;
+            currentPath = 0;
 
             //pathfinder = new Pathfinder(collisionGrid);
 
@@ -45,6 +44,7 @@ namespace AlgoritmeProjekt
         {
             sprite = contentManager.Load<Texture2D>("wizard");
         }
+
         private void Wat2Do()
         {
             if (!hasDeliveredPotion)
@@ -115,10 +115,9 @@ namespace AlgoritmeProjekt
             return World.Entities.OfType<Tower>().FirstOrDefault(a => a.Type == type);
         }
 
-        public void WizardPath(List<Vector2> list)
-
+        public void Path(List<Vector2> list)
         {
-            CurrentPath = 0;
+            currentPath = 0;
             path = list;
         }
 
@@ -141,11 +140,11 @@ namespace AlgoritmeProjekt
                 pos += direction * speed * deltaTime;
                 this.Position = pos;
 
-                if(Vector2.Distance(start,pos) >= distance && CurrentPath != path.Count )
+                if(Vector2.Distance(start,pos) >= distance && currentPath != path.Count )
                 {
                     
                     this.Position = end;
-                    CurrentPath++;
+                    currentPath++;
                     moving = false;
                 }   
 
@@ -157,11 +156,8 @@ namespace AlgoritmeProjekt
             base.Update(deltaTime);
 
           
-          if(CurrentPath <= path.Count -1)
-            FollowPath(path.ElementAt(CurrentPath), deltaTime);         
-
-
-            
+          if(currentPath <= path.Count -1)
+            FollowPath(path.ElementAt(currentPath), deltaTime);         
 
             foreach (Key key in World.Entities.OfType<Key>())
             {
