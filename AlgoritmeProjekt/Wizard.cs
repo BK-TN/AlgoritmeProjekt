@@ -253,7 +253,7 @@ namespace AlgoritmeProjekt
                 {
                     if (World.AreOnSameTile(this, portal))
                     {
-                        //TODO: gtfo
+                        World.RemoveEntity(this);
                     }
                 }
             }

@@ -17,8 +17,11 @@ namespace AlgoritmeProjekt
         private SpriteBatch spriteBatch;
         private Texture2D grass;
         private Texture2D sand;
+        private SpriteFont font;
 
         private World world;
+
+        private bool menu = true;
 
         public Game1()
         {
@@ -36,10 +39,7 @@ namespace AlgoritmeProjekt
         {
             world = new World(Content, WORLD_WIDTH, WORLD_HEIGHT, WORLD_TILESIZE);
 
-            Pathfinder wizPathfinder = new DepthFirst(world.CollisionGrid);
-
             world.AddEntity(new Portal() { Position = world.GridPosToVector(0, 8) });
-            world.AddEntity(new Wizard(wizPathfinder) { Position = world.GridPosToVector(1, 8) });
 
             world.AddEntity(new Tower(TowerType.StormTower) { Position = world.GridPosToVector(2, 4) });
             world.AddEntity(new Tower(TowerType.IceTower) { Position = world.GridPosToVector(8, 7) });
@@ -83,6 +83,7 @@ namespace AlgoritmeProjekt
             // TODO: use this.Content to load your game content here
             grass = Content.Load<Texture2D>("grass");
             sand = Content.Load<Texture2D>("sand");
+            font = Content.Load<SpriteFont>("DefaultFont");
         }
 
         /// <summary>
@@ -104,8 +105,24 @@ namespace AlgoritmeProjekt
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
             world.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            if (menu)
+            {
+                KeyboardState kb = Keyboard.GetState();
+                if (kb.IsKeyDown(Keys.D1)) //Depth first
+                {
+                    Pathfinder wizPathfinder = new DepthFirst(world.CollisionGrid);
+                    world.AddEntity(new Wizard(wizPathfinder) { Position = world.GridPosToVector(0, 8) });
+                    menu = false;
+                }
+                else if (kb.IsKeyDown(Keys.D2)) //A*
+                {
+                    Pathfinder wizPathfinder = new DepthFirst(world.CollisionGrid);
+                    world.AddEntity(new Wizard(wizPathfinder) { Position = world.GridPosToVector(0, 8) });
+                    menu = false;
+                }
+            }
 
             base.Update(gameTime);
         }
@@ -133,6 +150,13 @@ namespace AlgoritmeProjekt
                 spriteBatch.Draw(sand, world.GridPosToVector(2 + i, 8), Color.White);
             }
             world.Draw(spriteBatch);
+
+            if (menu)
+            {
+                //Draw menu
+                spriteBatch.DrawString(font, "fucking wizard shit \nPress 1 to use Depth First pathfinding \nPress 2 to use A* pathfinding", new Vector2(16, 100), Color.Black);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);
