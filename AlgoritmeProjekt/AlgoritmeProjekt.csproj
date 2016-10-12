@@ -84,6 +84,9 @@
     <Content Include="Content\portal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\potion.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\sand.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
