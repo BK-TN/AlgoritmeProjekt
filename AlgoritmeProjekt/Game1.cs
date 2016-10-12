@@ -118,7 +118,7 @@ namespace AlgoritmeProjekt
                 }
                 else if (kb.IsKeyDown(Keys.D2)) //A*
                 {
-                    Pathfinder wizPathfinder = new DepthFirst(world.CollisionGrid);
+                    Pathfinder wizPathfinder = new Astar(world.CollisionGrid);
                     world.AddEntity(new Wizard(wizPathfinder) { Position = world.GridPosToVector(0, 8) });
                     menu = false;
                 }

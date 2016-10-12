@@ -12,7 +12,6 @@ namespace AlgoritmeProjekt
 
         private List<Node> openList = new List<Node>();
         private List<Node> closedList = new List<Node>();
-        private bool endLoop = false;
 
         public List<Node> OpenList { get; set; }
         public List<Node> ClosedList { get; set; }
@@ -28,7 +27,7 @@ namespace AlgoritmeProjekt
                 return new GridPos[] { goal };
 
 
-            openList.Add(new Node(start, null));
+            openList.Add(new Node(start, null, 0, goal));
             
             while (openList.Count > 0)
             {
@@ -54,7 +53,8 @@ namespace AlgoritmeProjekt
                         pos.X < collisionGrid.Width &&
                         pos.Y < collisionGrid.Height &&
                         !openList.Any(a => a.Position.X == pos.X && a.Position.Y == pos.Y) &&
-                        !collisionGrid.GetTile(pos.X, pos.Y))
+                        !collisionGrid.GetTile(pos.X, pos.Y) &&
+                        !closedList.Any(a => a.Position.X == pos.X && a.Position.Y == pos.Y))
                     {
                         if (pos.X == goal.X && pos.Y == goal.Y)
                         {
@@ -72,10 +72,9 @@ namespace AlgoritmeProjekt
                             result.Add(pos);
                             return result.ToArray();
                         }
-                        Node newNode = new Node(pos, currentNode);
+                        Node newNode = new Node(pos, currentNode, currentNode.G + 10, goal);
                         openList.Add(newNode);
 
-                        break;
                     }
                 }
 
