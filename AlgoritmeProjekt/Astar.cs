@@ -7,34 +7,44 @@ using Microsoft.Xna.Framework;
 
 namespace AlgoritmeProjekt
 {
-    class Astar : Pathfinder
+    internal class Astar : Pathfinder
     {
-
-        private List<Node> openList = new List<Node>();
-        private List<Node> closedList = new List<Node>();
-
-        public List<Node> OpenList { get; set; }
-        public List<Node> ClosedList { get; set; }
-
-
         public Astar(CollisionGrid c) : base(c)
         {
         }
 
         public override GridPos[] FindPath(GridPos start, GridPos goal)
         {
+            List<Node> closedList = new List<Node>();
+            List<Node> openList = new List<Node>();
+
             if (start.X == goal.X && start.Y == goal.Y)
                 return new GridPos[] { goal };
 
-
             openList.Add(new Node(start, null, 0, goal));
-            
+
             while (openList.Count > 0)
             {
-                Node currentNode = openList.OrderBy(a => a.GetFValue).First();
+                Node currentNode = openList.OrderBy(a => a.F).First();
 
                 closedList.Add(currentNode);
                 openList.Remove(currentNode);
+
+                if (currentNode.Position.X == goal.X && currentNode.Position.Y == goal.Y)
+                {
+                    //Goal found! Backtrace to find route
+                    List<GridPos> result = new List<GridPos>();
+                    Node backtraceNode = currentNode;
+                    while (backtraceNode != null)
+                    {
+                        if (backtraceNode.Parent != null) //If not first node
+                            result.Add(backtraceNode.Position);
+                        backtraceNode = backtraceNode.Parent;
+                    }
+                    //Reverse the route, then add the endpoint
+                    result.Reverse();
+                    return result.ToArray();
+                }
 
                 //Check each direction for empty spot
                 GridPos[] positionsToCheck = new GridPos[]
@@ -52,36 +62,28 @@ namespace AlgoritmeProjekt
                         pos.Y >= 0 &&
                         pos.X < collisionGrid.Width &&
                         pos.Y < collisionGrid.Height &&
-                        !openList.Any(a => a.Position.X == pos.X && a.Position.Y == pos.Y) &&
                         !collisionGrid.GetTile(pos.X, pos.Y) &&
                         !closedList.Any(a => a.Position.X == pos.X && a.Position.Y == pos.Y))
                     {
-                        if (pos.X == goal.X && pos.Y == goal.Y)
+                        Node nodeAtPoint = openList.FirstOrDefault(a => a.Position.X == pos.X && a.Position.Y == pos.Y);
+                        if (nodeAtPoint == null)
                         {
-                            //Goal found! Backtrace to find route
-                            List<GridPos> result = new List<GridPos>();
-                            Node backtraceNode = currentNode;
-                            while (backtraceNode != null)
-                            {
-                                if (backtraceNode.Parent != null)
-                                    result.Add(backtraceNode.Position);
-                                backtraceNode = backtraceNode.Parent;
-                            }
-                            //Reverse the route, then add the endpoint
-                            result.Reverse();
-                            result.Add(pos);
-                            return result.ToArray();
+                            Node newNode = new Node(pos, currentNode, currentNode.G + 10, goal);
+                            openList.Add(newNode);
                         }
-                        Node newNode = new Node(pos, currentNode, currentNode.G + 10, goal);
-                        openList.Add(newNode);
-
+                        else
+                        {
+                            int newG = currentNode.G + 10;
+                            if (newG < nodeAtPoint.G)
+                            {
+                                nodeAtPoint.G = newG;
+                                nodeAtPoint.Parent = currentNode;
+                            }
+                        }
                     }
                 }
-
-
             }
             return null;
-
         }
     }
 }

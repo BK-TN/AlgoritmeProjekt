@@ -7,31 +7,25 @@ using Microsoft.Xna.Framework;
 
 namespace AlgoritmeProjekt
 {
-    enum GridType { Sart, Goal, Solid, Empty}
-
-   class Node
+    internal class Node
     {
-        private int g;
-        private int h;
-        private int f;
-
-        private Node parent;
-
-        //grid position
-
         public Node(GridPos position, Node parent, int g, GridPos goal)
         {
             Position = position;
-            this.parent = parent;
-            h = (int)Vector2.Distance(new Vector2(goal.X, goal.Y), new Vector2(position.X, position.Y));
-            this.g = g;
+            Parent = parent;
+            G = g;
+            H = (int)Vector2.Distance(new Vector2(goal.X, goal.Y), new Vector2(position.X, position.Y));
         }
 
         public Node Parent { get; set; }
         public GridPos Position { get; set; }
         public int G { get; set; }
-        public int H { get; set; }
-        public int GetFValue { get { return g + h; }}
+        public int H { get; }
+        public int F { get { return G + H; } }
 
+        public override string ToString()
+        {
+            return Position.ToString();
+        }
     }
 }
