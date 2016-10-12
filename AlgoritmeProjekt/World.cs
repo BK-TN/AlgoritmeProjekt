@@ -19,6 +19,8 @@ namespace AlgoritmeProjekt
         private ContentManager contentManager;
         private CollisionGrid collisionGrid;
 
+        private List<Entity> entitiesToRemove = new List<Entity>();
+
         public CollisionGrid CollisionGrid { get { return collisionGrid; } }
         public int TileSize { get; }
 
@@ -39,9 +41,20 @@ namespace AlgoritmeProjekt
             }
         }
 
+        public void RemoveEntity(Entity e)
+        {
+            entitiesToRemove.Add(e);
+        }
+
         public void Update(float deltaTime)
         {
             collisionGrid.Refresh(this);
+
+            foreach (Entity e in entitiesToRemove)
+            {
+                entities.Remove(e);
+            }
+            entitiesToRemove.Clear();
 
             foreach (Entity e in entities)
             {
