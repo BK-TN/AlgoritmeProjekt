@@ -23,8 +23,9 @@ namespace AlgoritmeProjekt
         private World world;
         int keyX;
         int keyY;
-        private Entity gås;
-        private bool ged = true;
+        GridPos gp;
+        Random rnd = new Random();
+        private bool spawning = true;
 
 
         private bool menu = true;
@@ -43,15 +44,15 @@ namespace AlgoritmeProjekt
         /// </summary>
         protected override void Initialize()
         {
-            
+
             world = new World(Content, WORLD_WIDTH, WORLD_HEIGHT, WORLD_TILESIZE);
-            
+
             world.AddEntity(new Portal() { Position = world.GridPosToVector(0, 8) });
 
             world.AddEntity(new Tower(TowerType.StormTower) { Position = world.GridPosToVector(2, 4) });
             world.AddEntity(new Tower(TowerType.IceTower) { Position = world.GridPosToVector(8, 7) });
 
-          
+
 
             for (int y = 1; y <= 6; y++)
             {
@@ -74,44 +75,28 @@ namespace AlgoritmeProjekt
             IsMouseVisible = true;
             this.graphics.PreferredBackBufferWidth = WORLD_WIDTH * WORLD_TILESIZE;
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT * WORLD_TILESIZE;
-            KeySpawn();
-            world.AddEntity(new Key(TowerType.StormTower) { Position = world.GridPosToVector(keyX, keyY) });
-            KeySpawn();
-            world.AddEntity(new Key(TowerType.IceTower) { Position = world.GridPosToVector(keyX, keyY) });
+
+            world.AddEntity(new Key(TowerType.StormTower) { Position = world.GridPosToVector(1, 1) });
+
+            world.AddEntity(new Key(TowerType.IceTower) { Position = world.GridPosToVector(2, 1) });
             base.Initialize();
         }
 
-
+        //Random spawn position for the Keys
         private void KeySpawn()
         {
-            gås = new Portal();
-            Random rndX = new Random();
-            Random rndY = new Random();
             
-             keyX = rndX.Next(1, 10);
-             keyY = rndY.Next(1, 10);
+            keyX = rnd.Next(0, 10);
+            keyY = rnd.Next(0, 10);
+            gp = new GridPos(keyX,keyY);
 
+            if (world.CollisionGrid.GetTile(keyX, keyY))
+                KeySpawn();
 
-            
-            while(ged == true)
-            {
-               foreach (Entity e in world.Entities)
-                {
-                    if (!e.World.CollisionGrid.GetTile(keyX, keyY) && e.Solid == true )
-                    {
-                    
-                        KeySpawn();
-
-                    }
-                    else
-                        ged = false;                  
-                }
-            }
-                
-            
+            else
+                spawning = false;
 
         }
-
 
 
         /// <summary>
@@ -149,6 +134,24 @@ namespace AlgoritmeProjekt
                 Exit();
 
             world.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            
+            //updates key position
+            while (spawning)
+            {
+                foreach (Entity e in world.Entities)
+                {
+                    if (e is Key)
+                    {
+                        KeySpawn();
+                        Vector2 diller = world.GridPosToVector(gp);
+                        e.Position = diller;
+                        
+                    }
+
+                }
+                spawning = false;
+            }
+            
 
             if (menu)
             {
@@ -197,7 +200,7 @@ namespace AlgoritmeProjekt
             if (menu)
             {
                 //Draw menu
-                spriteBatch.DrawString(font, "fucking wizard shit \nPress 1 to use Depth First pathfinding \nPress 2 to use A* pathfinding", new Vector2(16, 100), Color.Black);
+                spriteBatch.DrawString(font, "fucking wizard shit \nPress 1 for DFS pathfinding \nPress 2 for A* pathfinding", new Vector2(16, 10), Color.Black);
             }
 
             spriteBatch.End();
