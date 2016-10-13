@@ -23,6 +23,8 @@ namespace AlgoritmeProjekt
         private World world;
         int keyX;
         int keyY;
+        private Entity gås;
+        private bool ged = true;
 
 
         private bool menu = true;
@@ -43,16 +45,13 @@ namespace AlgoritmeProjekt
         {
             
             world = new World(Content, WORLD_WIDTH, WORLD_HEIGHT, WORLD_TILESIZE);
-            KeySpawn();
+            
             world.AddEntity(new Portal() { Position = world.GridPosToVector(0, 8) });
 
             world.AddEntity(new Tower(TowerType.StormTower) { Position = world.GridPosToVector(2, 4) });
             world.AddEntity(new Tower(TowerType.IceTower) { Position = world.GridPosToVector(8, 7) });
 
-
-            world.AddEntity(new Key(TowerType.StormTower) { Position = world.GridPosToVector(keyX, keyY) });
-            
-            world.AddEntity(new Key(TowerType.IceTower) { Position = world.GridPosToVector(keyX,keyY) });
+          
 
             for (int y = 1; y <= 6; y++)
             {
@@ -75,22 +74,41 @@ namespace AlgoritmeProjekt
             IsMouseVisible = true;
             this.graphics.PreferredBackBufferWidth = WORLD_WIDTH * WORLD_TILESIZE;
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT * WORLD_TILESIZE;
+            KeySpawn();
+            world.AddEntity(new Key(TowerType.StormTower) { Position = world.GridPosToVector(keyX, keyY) });
+            KeySpawn();
+            world.AddEntity(new Key(TowerType.IceTower) { Position = world.GridPosToVector(keyX, keyY) });
             base.Initialize();
         }
 
 
         private void KeySpawn()
         {
+            gås = new Portal();
             Random rndX = new Random();
             Random rndY = new Random();
+            
+             keyX = rndX.Next(1, 10);
+             keyY = rndY.Next(1, 10);
 
-            keyX = rndX.Next(0, 9);
-            keyY = rndY.Next(0, 9);
 
-            if (!world.CollisionGrid.GetTile(keyX, keyY))
+            
+            while(ged == true)
             {
-                KeySpawn();
+               foreach (Entity e in world.Entities)
+                {
+                    if (!e.World.CollisionGrid.GetTile(keyX, keyY) && e.Solid == true )
+                    {
+                    
+                        KeySpawn();
+
+                    }
+                    else
+                        ged = false;                  
+                }
             }
+                
+            
 
         }
 
