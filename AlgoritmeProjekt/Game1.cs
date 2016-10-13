@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace AlgoritmeProjekt
 {
@@ -20,6 +21,9 @@ namespace AlgoritmeProjekt
         private SpriteFont font;
 
         private World world;
+        int keyX;
+        int keyY;
+
 
         private bool menu = true;
 
@@ -37,15 +41,18 @@ namespace AlgoritmeProjekt
         /// </summary>
         protected override void Initialize()
         {
+            
             world = new World(Content, WORLD_WIDTH, WORLD_HEIGHT, WORLD_TILESIZE);
-
+            KeySpawn();
             world.AddEntity(new Portal() { Position = world.GridPosToVector(0, 8) });
 
             world.AddEntity(new Tower(TowerType.StormTower) { Position = world.GridPosToVector(2, 4) });
             world.AddEntity(new Tower(TowerType.IceTower) { Position = world.GridPosToVector(8, 7) });
 
-            world.AddEntity(new Key(TowerType.StormTower) { Position = world.GridPosToVector(0, 0) });
-            world.AddEntity(new Key(TowerType.IceTower) { Position = world.GridPosToVector(9, 9) });
+
+            world.AddEntity(new Key(TowerType.StormTower) { Position = world.GridPosToVector(keyX, keyY) });
+            
+            world.AddEntity(new Key(TowerType.IceTower) { Position = world.GridPosToVector(keyX,keyY) });
 
             for (int y = 1; y <= 6; y++)
             {
@@ -70,6 +77,24 @@ namespace AlgoritmeProjekt
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT * WORLD_TILESIZE;
             base.Initialize();
         }
+
+
+        private void KeySpawn()
+        {
+            Random rndX = new Random();
+            Random rndY = new Random();
+
+            keyX = rndX.Next(0, 9);
+            keyY = rndY.Next(0, 9);
+
+            if (!world.CollisionGrid.GetTile(keyX, keyY))
+            {
+                KeySpawn();
+            }
+
+        }
+
+
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
